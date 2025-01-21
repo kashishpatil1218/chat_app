@@ -3,10 +3,10 @@
 
 import 'package:chat_app/controller/auth_controller.dart';
 import 'package:chat_app/services/auth_services.dart';
+import 'package:chat_app/view/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({super.key});
@@ -45,21 +45,49 @@ class SignIn extends StatelessWidget {
               height: 20,
             ),
             ElevatedButton(
-                onPressed: ()async  {
-                  // user null
-                  await AuthService.authService.signInWithEmailAndPassword(
-                      controller.txtEmail.text, controller.txtPassword.text);
-                  //user
+              onPressed: () async {
+                // user null
+                // await AuthService.authService.signInWithEmailAndPassword(
+                //   controller.txtEmail.text,
+                //   controller.txtPassword.text,
+                // );
+                // //user
+                // User? user = AuthService.authService.getCurrentUser();
+                // if (user != null) {
+                //   Navigator.of(context).pushNamed('/home');
+                // } else {
+                //   Get.snackbar(
+                //       'Sign In Failed !', 'Email or password may be wrong !');
+                // }
+
+                String? error = await AuthService.authService
+                    .signInWithEmailAndPassword(
+                        controller.txtEmail.text, controller.txtPassword.text);
+
+                if (error == "error") {
+                  Get.snackbar(
+                    "incorrect email and password!",
+                    "please enter the correct email and password!",
+                  );
+                } else {
                   User? user = AuthService.authService.getCurrentUser();
-                  if(user!=null)
-                    {
-                       Navigator.of(context).pushNamed('/home');
-                    }
-                  else{
-                    Get.snackbar('Sign In Failed !', 'Email or password may be wrong !');
+                  if (user != null) {
+                    Get.offAll(
+                      const HomePage(),
+                      duration: const Duration(milliseconds: 600),
+                      transition: Transition.downToUp,
+                    );
+                    //123@gmail.com
+                    //123456789
+                    controller.txtEmail.clear();
+                    controller.txtPassword.clear();
+                  } else {
+                    Get.snackbar("error", user!.toString());
                   }
-                },
-                child: Text('Sign In'))
+                }
+              },
+              child: Text('Sign In'),
+            )
           ],
         ),
       ),

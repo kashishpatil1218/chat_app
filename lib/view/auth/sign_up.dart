@@ -6,7 +6,6 @@ import 'package:chat_app/services/auth_services.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -15,24 +14,45 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
     return Scaffold(
-      appBar:AppBar(title: Text('Sign Up'),),
+      appBar: AppBar(
+        title: Text('Sign Up'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(controller: controller.txtEmail,decoration: InputDecoration(labelText: 'Email'),),
-            TextField(controller: controller.txtPassword,decoration: InputDecoration(labelText: 'password',),),
-
-            SizedBox(height: 50,),
-            TextButton(onPressed: () {
-            Get.back();
-            }, child: Text("Already have account? Sign In")),
-            SizedBox(height: 20,),
-            ElevatedButton(onPressed: () {
-              AuthService.authService.createAccountWithEmailAndPassword(controller.txtEmail.text, controller.txtPassword.text);
-            }, child: Text('Sign Up'))
-
+            TextField(
+              controller: controller.txtEmail,
+              decoration: InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: controller.txtPassword,
+              decoration: InputDecoration(
+                labelText: 'password',
+              ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text("Already have account? Sign In"),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await AuthService.authService.createAccountWithEmailAndPassword(
+                  controller.txtEmail.text,
+                  controller.txtPassword.text,
+                );
+              },
+              child: Text('Sign Up'),
+            )
           ],
         ),
       ),
