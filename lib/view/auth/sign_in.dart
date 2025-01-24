@@ -7,6 +7,9 @@ import 'package:chat_app/view/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sign_in_button/sign_in_button.dart';
+
+import '../../services/google_auth_services.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({super.key});
@@ -46,20 +49,6 @@ class SignIn extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                // user null
-                // await AuthService.authService.signInWithEmailAndPassword(
-                //   controller.txtEmail.text,
-                //   controller.txtPassword.text,
-                // );
-                // //user
-                // User? user = AuthService.authService.getCurrentUser();
-                // if (user != null) {
-                //   Navigator.of(context).pushNamed('/home');
-                // } else {
-                //   Get.snackbar(
-                //       'Sign In Failed !', 'Email or password may be wrong !');
-                // }
-
                 String? error = await AuthService.authService
                     .signInWithEmailAndPassword(
                         controller.txtEmail.text, controller.txtPassword.text);
@@ -87,7 +76,17 @@ class SignIn extends StatelessWidget {
                 }
               },
               child: Text('Sign In'),
-            )
+            ),
+            SignInButton(Buttons.google, onPressed: () async {
+             await GoogleAuth.googleAuth.signInWithGoogle();
+               User? user = AuthService.authService.getCurrentUser();
+
+              if(user!=null)
+                {
+                  Get.offAndToNamed('/home');
+                }
+
+            }),
           ],
         ),
       ),

@@ -1,7 +1,5 @@
-// import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class AuthService {
   AuthService._();
@@ -10,8 +8,8 @@ class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   // ACCOUNT CREATE - SIGN UP
-  Future<void> createAccountWithEmailAndPassword(
-      String email, String password) async {
+  Future<void> createAccountWithEmailAndPassword(String email,
+      String password) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -19,8 +17,8 @@ class AuthService {
   }
 
 // LOGIN SIGN IN
-  Future<String> signInWithEmailAndPassword(
-      String email, String password) async {
+  Future<String> signInWithEmailAndPassword(String email,
+      String password) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -33,7 +31,7 @@ class AuthService {
   }
 
 // SIGN OUT
-  void signOutUser() async {
+  Future<void> signOutUser()  async {
     await _firebaseAuth.signOut();
   }
 
