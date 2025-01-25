@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       drawer: Drawer(
         child: FutureBuilder(
-          future: CloudFirestroreService.cloudFirestroreService
+          future: CloudFireStoreService.cloudFireStoreService
               .readCurrentUserFromFireStore(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
@@ -64,19 +64,20 @@ class HomePage extends StatelessWidget {
         title: Text('HomePage'),
       ),
       body: FutureBuilder(
-        future: CloudFirestroreService.cloudFirestroreService
+        future: CloudFireStoreService.cloudFireStoreService
             .readCurrentUserFromFireStore(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
               child: Text(snapshot.hasError.toString()),
             );
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-        List usersList = snapshot.data!.docs;
-
+          // todo : ui no code kar va no che ave.......
+          return Center(
+            child: Text("hii my name is deep patel"),
+          );
         },
       ),
     );
