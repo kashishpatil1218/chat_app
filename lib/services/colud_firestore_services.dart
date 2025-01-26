@@ -34,26 +34,44 @@ class CloudFireStoreService {
   Future<QuerySnapshot<Map<String, dynamic>>>
       readAllUserFromCloudFireStore() async {
     User? user = AuthService.authService.getCurrentUser();
-    return await fireStore.collection("users").where("email",isNotEqualTo: user!.email).get();
+    return await fireStore
+        .collection("users")
+        .where("email", isNotEqualTo: user!.email)
+        .get();
   }
 
   //ADD CHAT IN FIRE STORE
   Future<void> addChatInFireStore(ChatModel chat) async {
     String? sender = chat.sender;
     String? receiver = chat.receiver;
-    List doc =[sender,receiver];
+    List doc = [sender, receiver];
     doc.sort();
     String docId = doc.join("_");
-   await fireStore.collection("chatroom").doc(docId).collection("chat").add(chat.toMap(chat));
-
+    await fireStore
+        .collection("chatroom")
+        .doc(docId)
+        .collection("chat")
+        .add(chat.toMap(chat));
   }
+
   //  DISPLAY THE CHAT FROM FIRE STORE
-Stream<QuerySnapshot<Map<String, dynamic>>> readChatFromFireStore( String receiver)
-{
-  String? sender = AuthService.authService.getCurrentUser()!.email;
-  List doc =[sender,receiver];
-  doc.sort();
-  String docId = doc.join("_");
-  return fireStore.collection("chatroom").doc(docId).collection("chat").snapshots();
+  Stream<QuerySnapshot<Map<String, dynamic>>> readChatFromFireStore(
+      String receiver) {
+    String? sender = AuthService.authService.getCurrentUser()!.email;
+    List doc = [sender, receiver];
+    doc.sort();
+    String docId = doc.join("_");
+    return fireStore.collection("chatroom").doc(docId).collection("chat").orderBy("time", descending: false).snapshots();
+  }
+
+  // UPDATE TEH DATA FROM FIRE STORE
+ Future<void> updateChat(String receiver, ChatModel chat,String dcId)
+ async {
+   String? sender = AuthService.authService.getCurrentUser()!.email;
+   List doc = [sender, receiver];
+   doc.sort();
+   String docId = doc.join("_");
+  await fireStore.collection("chatroom").doc(docId).collection("chat").doc(dcId).update(chat.toMap(chat));
+ }
 }
-}
+

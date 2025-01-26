@@ -20,12 +20,11 @@ class ChatModel {
     );
   }
 
-  Map<String,dynamic> toMap(ChatModel chat)
-  {
-    return{
+  Map<String, dynamic> toMap(ChatModel chat) {
+    return {
       'sender': chat.sender,
       'receiver': chat.receiver,
-      'massega': chat.message,
+      'message': chat.message,
       'time': chat.time,
     };
   }
