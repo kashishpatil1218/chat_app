@@ -2,6 +2,7 @@ import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/services/auth_services.dart';
 import 'package:chat_app/view/auth/sign_in.dart';
 import 'package:chat_app/view/auth/sign_up.dart';
+import 'package:chat_app/view/home/chat_page.dart';
 import 'package:chat_app/view/home/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/home',
           page: () => HomePage(),
+        ),
+        GetPage(
+          name: '/chat',
+          page: () => ChatPage(),
         ),
       ],
     );
