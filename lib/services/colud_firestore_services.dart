@@ -61,17 +61,20 @@ class CloudFireStoreService {
     List doc = [sender, receiver];
     doc.sort();
     String docId = doc.join("_");
-    return fireStore.collection("chatroom").doc(docId).collection("chat").orderBy("time", descending: false).snapshots();
+    return fireStore
+        .collection("chatroom")
+        .doc(docId)
+        .collection("chat")
+        .orderBy("time", descending: false)
+        .snapshots();
   }
 
   // UPDATE TEH DATA FROM FIRE STORE
- Future<void> updateChat(String receiver, ChatModel chat,String dcId)
- async {
-   String? sender = AuthService.authService.getCurrentUser()!.email;
-   List doc = [sender, receiver];
-   doc.sort();
-   String docId = doc.join("_");
-  await fireStore.collection("chatroom").doc(docId).collection("chat").doc(dcId).update(chat.toMap(chat));
- }
+  Future<void> updateChat(String receiver, String dcId, String message) async {
+    String? sender = AuthService.authService.getCurrentUser()!.email;
+    List doc = [sender, receiver];
+    doc.sort();
+    String docId = doc.join("_");
+    await fireStore.collection("chatroom").doc(docId).collection("message").doc(dcId).update({'message': message});
+  }
 }
-

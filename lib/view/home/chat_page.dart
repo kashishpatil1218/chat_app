@@ -32,26 +32,28 @@ class ChatPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          // List data = snapshot.data!.docs;
-          // List<ChatModel> chatList = [];
-          // for (QueryDocumentSnapshot snap in data) {
-          //   chatList.add(
-          //     ChatModel.fromMap(snap.data() as Map),
-          //   );
-          // }
+          List data = snapshot.data!.docs;
+          List<ChatModel> chatList = [];
+          List<String> docIdList = [];
+          for (QueryDocumentSnapshot snap in data) {
+            docIdList.add(snap.id);
+            chatList.add(
+              ChatModel.fromMap(snap.data() as Map),
+            );
+          }
 
-          List<QueryDocumentSnapshot<Map<String, dynamic>>> data =
-              snapshot.data!.docs;
-          List dataList = data
-              .map(
-                (e) => e.data(),
-              )
-              .toList();
-          List<ChatModel> chatList = dataList
-              .map(
-                (e) => ChatModel.fromMap(e),
-              )
-              .toList();
+          // List<QueryDocumentSnapshot<Map<String, dynamic>>> data =
+          //     snapshot.data!.docs;
+          // List dataList = data
+          //     .map(
+          //       (e) => e.data(),
+          //     )
+          //     .toList();
+          // List<ChatModel> chatList = dataList
+          //     .map(
+          //       (e) => ChatModel.fromMap(e),
+          //     )
+          //     .toList();
 
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -69,11 +71,34 @@ class ChatPage extends StatelessWidget {
                                 ? MainAxisAlignment.end
                                 : MainAxisAlignment.start,
                         children: [
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                chatList[index].message.toString(),style: TextStyle(fontSize: 20),
+                          GestureDetector(
+                            onLongPress:(){
+                              if(chatList[index].sender==AuthService.authService.getCurrentUser()!.email!)
+                                {
+                                  chatController.txtUpdateMessage= TextEditingController(text: chatList[index].message);
+                                  showDialog(context: context, builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('Update'),
+                                      content: TextField(controller: chatController.txtUpdateMessage,),
+                                      actions: [
+                                        TextButton(onPressed: () {
+                                          String dcId = docIdList[index];
+                                          CloudFireStoreService.cloudFireStoreService.updateChat(chatController.receiverEmail.value,chatController.txtUpdateMessage.text, dcId);
+                                          Get.back();
+                                        }, child: Text('Update')),
+                                      ],
+                                    );
+                                  },);
+                                }
+
+
+                            },
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  chatList[index].message.toString(),style: TextStyle(fontSize: 20),
+                                ),
                               ),
                             ),
                           ),
