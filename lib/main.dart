@@ -4,6 +4,7 @@ import 'package:chat_app/view/auth/sign_in.dart';
 import 'package:chat_app/view/auth/sign_up.dart';
 import 'package:chat_app/view/home/chat_page.dart';
 import 'package:chat_app/view/home/home_page.dart';
+import 'package:chat_app/view/home/simple_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,12 +22,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       getPages: [
-        GetPage(
-          name: '/',
-          page: () => (AuthService.authService.getCurrentUser() == null)
-              ? SignIn()
-              : HomePage(),
-        ),
+        // GetPage(
+        //   name: '/',
+        //   page: () => simplePage()),
+        GetPage(name: '/', page: () => (AuthService.authService.getCurrentUser() == null) ? SignIn() : HomePage(),),
         GetPage(
           name: '/signup',
           page: () => SignUp(),

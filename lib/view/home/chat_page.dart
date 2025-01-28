@@ -32,28 +32,33 @@ class ChatPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          List data = snapshot.data!.docs;
-          List<ChatModel> chatList = [];
-          List<String> docIdList = [];
-          for (QueryDocumentSnapshot snap in data) {
-            docIdList.add(snap.id);
-            chatList.add(
-              ChatModel.fromMap(snap.data() as Map),
-            );
-          }
+          // List data = snapshot.data!.docs;
+          // List<ChatModel> chatList = [];
+          // List<String> docIdList = [];
+          // for (QueryDocumentSnapshot snap in data) {
+          //   docIdList.add(snap.id);
+          //   chatList.add(
+          //     ChatModel.fromMap(snap.data() as Map),
+          //   );
+          // }
 
-          // List<QueryDocumentSnapshot<Map<String, dynamic>>> data =
-          //     snapshot.data!.docs;
-          // List dataList = data
-          //     .map(
-          //       (e) => e.data(),
-          //     )
-          //     .toList();
-          // List<ChatModel> chatList = dataList
-          //     .map(
-          //       (e) => ChatModel.fromMap(e),
-          //     )
-          //     .toList();
+          List<QueryDocumentSnapshot<Map<String, dynamic>>> data =
+              snapshot.data!.docs;
+          List dataList = data
+              .map(
+                (e) => e.data(),
+              )
+              .toList();
+          List<ChatModel> chatList = dataList
+              .map(
+                (e) => ChatModel.fromMap(e),
+              )
+              .toList();
+          List docIdList = data
+              .map(
+                (e) => e.id,
+              )
+              .toList();
 
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -71,33 +76,59 @@ class ChatPage extends StatelessWidget {
                                 ? MainAxisAlignment.end
                                 : MainAxisAlignment.start,
                         children: [
+
                           GestureDetector(
-                            onLongPress:(){
-                              if(chatList[index].sender==AuthService.authService.getCurrentUser()!.email!)
-                                {
-                                  chatController.txtUpdateMessage= TextEditingController(text: chatList[index].message);
-                                  showDialog(context: context, builder: (context) {
-                                    return AlertDialog(
-                                      title: Text('Update'),
-                                      content: TextField(controller: chatController.txtUpdateMessage,),
-                                      actions: [
-                                        TextButton(onPressed: () {
-                                          String dcId = docIdList[index];
-                                          CloudFireStoreService.cloudFireStoreService.updateChat(chatController.receiverEmail.value,chatController.txtUpdateMessage.text, dcId);
-                                          Get.back();
-                                        }, child: Text('Update')),
-                                      ],
-                                    );
-                                  },);
-                                }
+                            onLongPress: () {
+                              CloudFireStoreService.cloudFireStoreService
+                                  .deleteMessage(chatList[index].receiver!,
+                                      docIdList[index]);
 
-
+                              // if (chatList[index].sender ==
+                              //     AuthService.authService
+                              //         .getCurrentUser()!
+                              //         .email!) {
+                              //   chatController.txtUpdateMessage =
+                              //       TextEditingController(
+                              //           text: chatList[index].message);
+                              //   showDialog(
+                              //     context: context,
+                              //     builder: (context) {
+                              //       return AlertDialog(
+                              //         title: Text('Update'),
+                              //         content: TextField(
+                              //           controller:
+                              //               chatController.txtUpdateMessage,
+                              //         ),
+                              //         actions: [
+                              //           TextButton(
+                              //             onPressed: () {
+                              //               print(
+                              //                   "hi        --- -- -- -- ------- -");
+                              //
+                              //               CloudFireStoreService
+                              //                   .cloudFireStoreService
+                              //                   .updateChat(
+                              //                 chatList[index].receiver!,
+                              //                 chatController
+                              //                     .txtUpdateMessage.text,
+                              //                 docIdList[index],
+                              //               );
+                              //               Get.back();
+                              //             },
+                              //             child: Text('Update'),
+                              //           ),
+                              //         ],
+                              //       );
+                              //     },
+                              //   );
+                              // }
                             },
                             child: Card(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  chatList[index].message.toString(),style: TextStyle(fontSize: 20),
+                                  chatList[index].message.toString(),
+                                  style: TextStyle(fontSize: 20),
                                 ),
                               ),
                             ),
@@ -111,23 +142,38 @@ class ChatPage extends StatelessWidget {
                   controller: chatController.txtMessage,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      onPressed: () async {
-                        ChatModel chat = ChatModel(
-                          sender:
-                              AuthService.authService.getCurrentUser()!.email,
-                          receiver: chatController.receiverEmail.value,
-                          message: chatController.txtMessage.text,
-                          time: Timestamp.now(),
-                        );
+                    suffixIcon: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                          ChatModel chat = ChatModel(sender:chatController.receiverName.value, receiver: chatController.receiverEmail.value, message: "", time: Timestamp.now());
+await chatController.sendImage(chat);
+                          },
+                          icon: Icon(
+                            Icons.attach_file_outlined,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            ChatModel chat = ChatModel(
+                              sender:
+                                  AuthService.authService.getCurrentUser()!.email,
+                              receiver: chatController.receiverEmail.value,
+                              message: chatController.txtMessage.text,
+                              time: Timestamp.now(),
+                            );
 
-                        await CloudFireStoreService.cloudFireStoreService
-                            .addChatInFireStore(chat);
-                      },
-                      icon: Icon(
-                        Icons.send,
-                        color: Colors.blueAccent,
-                      ),
+                            await CloudFireStoreService.cloudFireStoreService
+                                .addChatInFireStore(chat);
+                          },
+                          icon: Icon(
+                            Icons.send,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

@@ -70,11 +70,32 @@ class CloudFireStoreService {
   }
 
   // UPDATE TEH DATA FROM FIRE STORE
-  Future<void> updateChat(String receiver, String dcId, String message) async {
+  Future<void> updateChat(String receiver, var dcId, String message) async {
     String? sender = AuthService.authService.getCurrentUser()!.email;
     List doc = [sender, receiver];
     doc.sort();
     String docId = doc.join("_");
-    await fireStore.collection("chatroom").doc(docId).collection("message").doc(dcId).update({'message': message});
+    fireStore
+        .collection('chatroom')
+        .doc(docId)
+        .collection("chat")
+        .doc(dcId)
+        .update({
+      'message': message,
+    });
+  }
+
+  Future<void> deleteMessage(String receiver, var dcId) async {
+    String? sender = AuthService.authService.getCurrentUser()!.email;
+    List doc = [sender, receiver];
+    doc.sort();
+    String docId = doc.join("_");
+
+    await fireStore
+        .collection('chatroom')
+        .doc(docId)
+        .collection("chat")
+        .doc(dcId)
+        .delete();
   }
 }

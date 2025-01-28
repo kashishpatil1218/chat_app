@@ -41,3 +41,8 @@ class AuthService {
     return user;
   }
 }
+
+
+const String clientId = "36b1e828c60635d";
+const String clientSecret = "bca764d3154287829e105a36bb98416dbf5ce3c6";
+//https://api.imgur.com/3/image
