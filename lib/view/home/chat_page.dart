@@ -13,6 +13,7 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.greenAccent.shade100,
       appBar: AppBar(
         title: Text(chatController.receiverName.value),
       ),
@@ -76,7 +77,6 @@ class ChatPage extends StatelessWidget {
                                 ? MainAxisAlignment.end
                                 : MainAxisAlignment.start,
                         children: [
-
                           GestureDetector(
                             onLongPress: () {
                               CloudFireStoreService.cloudFireStoreService
@@ -126,10 +126,18 @@ class ChatPage extends StatelessWidget {
                             child: Card(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  chatList[index].message.toString(),
-                                  style: TextStyle(fontSize: 20),
-                                ),
+                                child: (chatList[index].IsImage == true)
+                                    ? SizedBox(
+                                        height: 100,
+                                        width: 100,
+                                        child: Image.network(
+                                          chatList[index].message ?? "",
+                                        ),
+                                      )
+                                    : Text(
+                                        chatList[index].message.toString(),
+                                        style: TextStyle(fontSize: 20),
+                                      ),
                               ),
                             ),
                           ),
@@ -147,8 +155,16 @@ class ChatPage extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () async {
-                          ChatModel chat = ChatModel(sender:chatController.receiverName.value, receiver: chatController.receiverEmail.value, message: "", time: Timestamp.now());
-await chatController.sendImage(chat);
+                            ChatModel chat = ChatModel(
+                              sender: AuthService.authService
+                                  .getCurrentUser()!
+                                  .email,
+                              receiver: chatController.receiverEmail.value,
+                              message: "",
+                              time: Timestamp.now(),
+                              IsImage: true,
+                            );
+                            await chatController.sendImage(chat);
                           },
                           icon: Icon(
                             Icons.attach_file_outlined,
@@ -158,11 +174,13 @@ await chatController.sendImage(chat);
                         IconButton(
                           onPressed: () async {
                             ChatModel chat = ChatModel(
-                              sender:
-                                  AuthService.authService.getCurrentUser()!.email,
+                              sender: AuthService.authService
+                                  .getCurrentUser()!
+                                  .email,
                               receiver: chatController.receiverEmail.value,
                               message: chatController.txtMessage.text,
                               time: Timestamp.now(),
+                              IsImage: false,
                             );
 
                             await CloudFireStoreService.cloudFireStoreService
