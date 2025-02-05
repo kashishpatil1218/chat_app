@@ -23,10 +23,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       getPages: [
+        // GetPage(name: '/', page: () => simplePage()),
         GetPage(
           name: '/',
-          page: () => simplePage()),
-        GetPage(name: '/', page: () => (AuthService.authService.getCurrentUser() == null) ? SignIn() : HomePage(),),
+          page: () => (AuthService.authService.getCurrentUser() == null)
+              ? SignIn()
+              : HomePage(),
+        ),
         GetPage(
           name: '/signup',
           page: () => SignUp(),
