@@ -129,6 +129,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     backgroundColor: Color(0xFF0B111D),
       drawer: Drawer(
         child: FutureBuilder(
           future: CloudFireStoreService.cloudFireStoreService
@@ -258,7 +259,8 @@ class HomePage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text("HomePage"),
+       backgroundColor: Color(0xFF1F2B41),
+        title: Text("Chats",style: TextStyle(color: Colors.white,fontSize: 28),),
         actions: [
           IconButton(
             onPressed: () async {
@@ -270,7 +272,7 @@ class HomePage extends StatelessWidget {
                 duration: Duration(milliseconds: 600),
               );
             },
-            icon: Icon(Icons.exit_to_app),
+            icon: Icon(Icons.exit_to_app,color: Colors.white,),
           ),
         ],
       ),
@@ -303,16 +305,14 @@ class HomePage extends StatelessWidget {
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(userList[index].Image!),
                 ),
-                title: Text(userList[index].name!),
-                subtitle: Text(userList[index].email!),
+                title: Text(userList[index].name!,style: TextStyle(color: Colors.white),),
+                subtitle: Text(userList[index].email!,style: TextStyle(color: Colors.grey)),
               );
             },
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.of(context).pushNamed('/setting');
-      },),
+
     );
   }
 }

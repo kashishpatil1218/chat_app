@@ -13,9 +13,22 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent.shade100,
+      backgroundColor: Color(0xFF0B111D),
       appBar: AppBar(
-        title: Text(chatController.receiverName.value),
+        elevation: 8,
+        backgroundColor: Color(0xFF0B111D),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+            )),
+        title: Text(
+          chatController.receiverName.value,
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: StreamBuilder(
         stream: CloudFireStoreService.cloudFireStoreService
@@ -78,55 +91,10 @@ class ChatPage extends StatelessWidget {
                                 : MainAxisAlignment.start,
                         children: [
                           GestureDetector(
-                            onLongPress: () {
-                              CloudFireStoreService.cloudFireStoreService
-                                  .deleteMessage(chatList[index].receiver!,
-                                      docIdList[index]);
-
-                              // if (chatList[index].sender ==
-                              //     AuthService.authService
-                              //         .getCurrentUser()!
-                              //         .email!) {
-                              //   chatController.txtUpdateMessage =
-                              //       TextEditingController(
-                              //           text: chatList[index].message);
-                              //   showDialog(
-                              //     context: context,
-                              //     builder: (context) {
-                              //       return AlertDialog(
-                              //         title: Text('Update'),
-                              //         content: TextField(
-                              //           controller:
-                              //               chatController.txtUpdateMessage,
-                              //         ),
-                              //         actions: [
-                              //           TextButton(
-                              //             onPressed: () {
-                              //               print(
-                              //                   "hi        --- -- -- -- ------- -");
-                              //
-                              //               CloudFireStoreService
-                              //                   .cloudFireStoreService
-                              //                   .updateChat(
-                              //                 chatList[index].receiver!,
-                              //                 chatController
-                              //                     .txtUpdateMessage.text,
-                              //                 docIdList[index],
-                              //               );
-                              //               Get.back();
-                              //             },
-                              //             child: Text('Update'),
-                              //           ),
-                              //         ],
-                              //       );
-                              //     },
-                              //   );
-                              // }
-                            },
                             child: Card(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: (chatList[index].IsImage == true)
+                                child: (chatList[index].isImage)
                                     ? SizedBox(
                                         height: 100,
                                         width: 100,
@@ -140,6 +108,38 @@ class ChatPage extends StatelessWidget {
                                       ),
                               ),
                             ),
+                            onDoubleTap: () {
+                              CloudFireStoreService.cloudFireStoreService
+                                  .deleteMessage(
+                                chatList[index].receiver!,
+                                docIdList[index],
+                              );
+                            },
+                            onLongPress: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Update"),
+                                  content: TextField(
+                                    controller: chatController.txtUpdateMessage,
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        CloudFireStoreService
+                                            .cloudFireStoreService
+                                            .updateChat(
+                                                chatList[index].receiver!,
+                                                docIdList[index],
+                                                chatController
+                                                    .txtUpdateMessage.text);
+                                      },
+                                      child: Text("update"),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -148,8 +148,11 @@ class ChatPage extends StatelessWidget {
                 ),
                 TextField(
                   controller: chatController.txtMessage,
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
                     suffixIcon: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -162,7 +165,7 @@ class ChatPage extends StatelessWidget {
                               receiver: chatController.receiverEmail.value,
                               message: "",
                               time: Timestamp.now(),
-                              IsImage: true,
+                              isImage: true,
                             );
                             await chatController.sendImage(chat);
                           },
@@ -180,15 +183,14 @@ class ChatPage extends StatelessWidget {
                               receiver: chatController.receiverEmail.value,
                               message: chatController.txtMessage.text,
                               time: Timestamp.now(),
-                              IsImage: false,
+                              isImage: false,
                             );
-
                             await CloudFireStoreService.cloudFireStoreService
                                 .addChatInFireStore(chat);
                           },
                           icon: Icon(
                             Icons.send,
-                            color: Colors.blueAccent,
+                            color: Colors.grey,
                           ),
                         ),
                       ],

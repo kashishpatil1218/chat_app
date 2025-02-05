@@ -14,15 +14,33 @@ class ChatController extends GetxController {
   RxString receiverName = "".obs;
   RxString imgUrl = "".obs;
   var time = Timestamp.now().obs;
+  final ImagePicker _picker = ImagePicker();
 
-  // SEND I,AGE IN FIRE STORE
+  //SEND I,AGE IN FIRE STORE
   Future<void> sendImage(ChatModel chat) async {
     ImagePicker imagePicker = ImagePicker();
-    XFile? xFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    XFile? xFile = await imagePicker.pickImage(source: ImageSource.camera);
     Uint8List image = await xFile!.readAsBytes();
     chat.message = await ApiHelper.apiHelper.uploadImage(image) ?? "";
     await CloudFireStoreService.cloudFireStoreService.addChatInFireStore(chat);
+    print("Image sent successfully: ${chat.message}");
   }
+
+  // Future<void> sendImageFromGallery(ChatModel chat) async {
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  //   if (image != null) {
+  //
+  //     print('Selected image from gallery: ${image.path}');
+  //   }
+  // }
+  //
+  // Future<void> sendImageFromCamera(ChatModel chat) async {
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+  //   if (image != null) {
+  //
+  //     print('Captured image from camera: ${image.path}');
+  //   }
+  // }
 
   TextEditingController txtMessage = TextEditingController();
   TextEditingController txtUpdateMessage = TextEditingController();

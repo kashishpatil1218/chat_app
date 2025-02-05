@@ -3,14 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatModel {
   String? sender, receiver, message;
   Timestamp time;
-  bool? IsImage;
+  bool isImage;
 
   ChatModel({
     required this.sender,
     required this.receiver,
     required this.message,
     required this.time,
-    required this.IsImage,
+    required this.isImage,
   });
 
   factory ChatModel.fromMap(Map m1) {
@@ -19,7 +19,7 @@ class ChatModel {
       receiver: m1['receiver'],
       message: m1['message'],
       time: m1['time'],
-      IsImage: m1['IsImage'],
+      isImage: m1['isImage'],
     );
   }
 
@@ -29,7 +29,7 @@ class ChatModel {
       'receiver': chat.receiver,
       'message': chat.message,
       'time': chat.time,
-      'isImage': chat.IsImage,
+      'isImage': chat.isImage,
     };
   }
 }

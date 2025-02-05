@@ -19,13 +19,18 @@ class SignIn extends StatelessWidget {
     var controller = Get.put(AuthController());
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: Text(
+          'Sign In',
+          style: TextStyle(
+              color: Colors.black, fontSize: 35, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             TextField(
               controller: controller.txtEmail,
               decoration: InputDecoration(labelText: 'Email'),
@@ -78,14 +83,12 @@ class SignIn extends StatelessWidget {
               child: Text('Sign In'),
             ),
             SignInButton(Buttons.google, onPressed: () async {
-             await GoogleAuth.googleAuth.signInWithGoogle();
-               User? user = AuthService.authService.getCurrentUser();
+              await GoogleAuth.googleAuth.signInWithGoogle();
+              User? user = AuthService.authService.getCurrentUser();
 
-              if(user!=null)
-                {
-                  Get.offAndToNamed('/home');
-                }
-
+              if (user != null) {
+                Get.offAndToNamed('/home');
+              }
             }),
           ],
         ),
