@@ -125,6 +125,7 @@ class SettingsPage extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                   child: CircleAvatar(
+                    backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXQcP51A3ncwchFeonpESD-_s8Gg043M_a2g&s'),
                     radius: 40,
                   ),
                 ),

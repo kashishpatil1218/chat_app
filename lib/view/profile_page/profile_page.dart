@@ -1,12 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../model/user_model.dart';
 import '../../services/auth_services.dart';
 import '../../services/colud_firestore_services.dart';
+import '../../services/google_auth_services.dart';
 import '../../services/image_upload_Api_server.dart';
+import '../auth/sign_in.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -83,21 +86,36 @@ class ProfilePage extends StatelessWidget {
                 title: 'Notification',
                 icon: Icons.notifications_none_outlined,
                 trailingIcon: Icons.arrow_forward_ios,
-              ),
-              optionProfile(
-                title: 'Setting',
-                icon: Icons.settings,
-                trailingIcon: Icons.arrow_forward_ios,
+              ), GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed('/set');
+                },
+                child: optionProfile(
+                  title: 'Setting',
+                  icon: Icons.settings,
+                  trailingIcon: Icons.arrow_forward_ios,
+                ),
               ),
               optionProfile(
                 title: 'Help center',
                 icon: Icons.help_outline,
                 trailingIcon: Icons.arrow_forward_ios,
               ),
-              optionProfile(
-                title: 'Log Out',
-                icon: Icons.logout,
-                trailingIcon: Icons.arrow_forward_ios,
+              GestureDetector(
+                onTap: () async {
+                  await AuthService.authService.signOutUser();
+                  await GoogleAuth.googleAuth.signOutFromGoogle();
+                  Get.offAll(
+                    SignIn(),
+                    transition: Transition.upToDown,
+                    duration: Duration(milliseconds: 600),
+                  );
+                },
+                child: optionProfile(
+                  title: 'Log Out',
+                  icon: Icons.logout,
+                  trailingIcon: Icons.arrow_forward_ios,
+                ),
               ),
               SizedBox(
                 height: 20,
