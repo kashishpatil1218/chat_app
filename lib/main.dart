@@ -5,6 +5,7 @@ import 'package:chat_app/view/auth/sign_up.dart';
 import 'package:chat_app/view/home/chat_page.dart';
 import 'package:chat_app/view/home/home_page.dart';
 import 'package:chat_app/view/home/simple_page.dart';
+import 'package:chat_app/view/profile_page/profile_page.dart';
 import 'package:chat_app/view/setting_page/settings_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/set',
           page: () => SettingsPage(),
+        ),
+        GetPage(
+          name: '/pro',
+          page: () => ProfilePage(),
         ),
       ],
     );

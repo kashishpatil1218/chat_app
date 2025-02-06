@@ -15,6 +15,7 @@ class ChatController extends GetxController {
   RxString imgUrl = "".obs;
   var time = Timestamp.now().obs;
   final ImagePicker _picker = ImagePicker();
+  String image = '';
 
   //SEND I,AGE IN FIRE STORE
   Future<void> sendImage(ChatModel chat) async {
@@ -24,6 +25,10 @@ class ChatController extends GetxController {
     chat.message = await ApiHelper.apiHelper.uploadImage(image) ?? "";
     await CloudFireStoreService.cloudFireStoreService.addChatInFireStore(chat);
     print("Image sent successfully: ${chat.message}");
+  }
+
+  void img(String userImage) {
+    image = userImage;
   }
 
   // Future<void> sendImageFromGallery(ChatModel chat) async {

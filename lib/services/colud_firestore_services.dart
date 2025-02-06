@@ -23,6 +23,12 @@ class CloudFireStoreService {
     });
   }
 
+  Future<void> editImage(String image, String email) async {
+    await fireStore.collection("users").doc(email).update({
+      "Image": image,
+    });
+  }
+
   // READ DATA FOR CURFuture<DocumentSnapshot<Map<String, dynamic>>>PROFILE
   Future<DocumentSnapshot<Map<String, dynamic>>>
       readCurrentUserFromFireStore() async {

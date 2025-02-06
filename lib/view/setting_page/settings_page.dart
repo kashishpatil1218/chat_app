@@ -187,15 +187,15 @@ class SettingsPage extends StatelessWidget {
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.only(bottom: 30, left: 5),
-          child: Icon(icon, color: Colors.grey, size: 30),
+          child: Icon(icon, color: Colors.grey, size: 25),
         ),
         title: Text(
           title,
-          style: TextStyle(color: Colors.white, fontSize: 23),
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(color: Colors.grey, fontSize: 18),
+          style: TextStyle(color: Colors.grey, fontSize: 15),
         ),
       ),
     );
