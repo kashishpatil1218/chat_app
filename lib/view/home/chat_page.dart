@@ -39,6 +39,12 @@ class ChatPage extends StatelessWidget {
               chatController.receiverName.value,
               style: TextStyle(color: Colors.white),
             ),
+            SizedBox(width: 81,),
+            Icon(Icons.call_outlined,color: Colors.white,),
+            SizedBox(width: 20,),
+            Icon(Icons.video_call,color: Colors.white,),
+            SizedBox(width: 20,),
+            Icon(Icons.more_vert,color: Colors.white,),
           ],
         ),
       ),
@@ -96,6 +102,22 @@ class ChatPage extends StatelessWidget {
                           children: [
                             GestureDetector(
                               child: Card(
+
+                                shape: RoundedRectangleBorder(
+
+                                  borderRadius:(chatList[index].sender! ==
+                            AuthService.authService
+                            .getCurrentUser()!
+                            .email)? BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ):BorderRadius.only(
+                                    bottomRight: Radius.circular(20),
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
                                 color: Color(0xFF2E7587),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -210,12 +232,14 @@ class ChatPage extends StatelessWidget {
                   ),
                 ),
                 TextField(
+                  
                   controller: chatController.txtMessage,
                   style: TextStyle(color: Colors.white, fontSize: 20),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(28),
                     ),
+                    prefixIcon: Icon(Icons.emoji_emotions,size: 28,color: Colors.amber,),
                     suffixIcon: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
