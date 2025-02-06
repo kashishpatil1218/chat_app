@@ -9,13 +9,17 @@ import '../../auth/sign_in.dart';
 
 Widget userDrawer() {
   return Drawer(
-    backgroundColor: Colors.black,
+    backgroundColor: Colors.white,
     child: FutureBuilder(
       future: CloudFireStoreService.cloudFireStoreService
           .readCurrentUserFromFireStore(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text(snapshot.hasError.toString()));
+          return Center(
+            child: Text(
+              snapshot.hasError.toString(),
+            ),
+          );
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -42,7 +46,7 @@ Widget userDrawer() {
                     Text(
                       userModel.name!,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -51,7 +55,7 @@ Widget userDrawer() {
                     Text(
                       userModel.email!,
                       style: TextStyle(
-                        color: Colors.grey,
+                        color: Colors.grey.shade900,
                         fontSize: 15,
                       ),
                     ),
@@ -64,11 +68,11 @@ Widget userDrawer() {
             ListTile(
               leading: Icon(Icons.chat, color: Colors.blue),
               title: Text(
-                "Chats",
+                "Chats  ",
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Colors.black),
               ),
               onTap: () {
                 Get.toNamed('/chats'); // Navigate to Chats
@@ -83,9 +87,9 @@ Widget userDrawer() {
                 child: Text(
                   "Settings",
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      color: Colors.black),
                 ),
               ),
             ),
@@ -94,28 +98,35 @@ Widget userDrawer() {
               title: Text(
                 "Profile",
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Colors.black),
               ),
               onTap: () {
                 Get.toNamed('/pro'); // Navigate to Profile
               },
             ),
-            Divider(),
+            Divider(
+              thickness: 2,
+              endIndent: 120,
+            ),
             Spacer(),
             // Logout Button
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
+                  backgroundColor: Colors.grey.shade900,
                   minimumSize: Size(double.infinity, 50),
                 ),
-                icon: Icon(Icons.logout, color: Colors.white),
+                icon: Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                  size: 20,
+                ),
                 label: Text(
                   "Logout",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 onPressed: () async {
                   await AuthService.authService.signOutUser();

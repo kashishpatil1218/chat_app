@@ -1,12 +1,13 @@
 class UserModel {
-  String? name, email, Image, phone, token;
+  String? name, email, Image, phone;
+  bool isOnline;
 
-  UserModel({
-    required this.name,
-    required this.email,
-    required this.phone,
-    required this.Image,
-    required this.token});
+  UserModel(
+      {required this.name,
+      required this.email,
+      required this.phone,
+      required this.Image,
+      required this.isOnline});
 
   factory UserModel.fromMap(Map m1) {
     return UserModel(
@@ -14,16 +15,16 @@ class UserModel {
         email: m1['email'],
         phone: m1['phone'],
         Image: m1['Image'],
-        token: m1['token']);
+        isOnline: m1['isOnline']);
   }
 
-  Map<String, String?> toMap(UserModel user) {
+  Map<String, dynamic> toMap(UserModel user) {
     return {
       'name': user.name,
       'email': user.email,
       'phone': user.phone,
       'Image': user.Image,
-      'token': user.token,
+      'isOnline': user.isOnline,
     };
   }
 }

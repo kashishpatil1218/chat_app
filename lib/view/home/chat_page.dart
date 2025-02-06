@@ -6,16 +6,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    CloudFireStoreService.cloudFireStoreService.editOnline(
+      true,
+      AuthService.authService.getCurrentUser()!.email.toString(),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    CloudFireStoreService.cloudFireStoreService.editOnline(
+      false,
+      AuthService.authService.getCurrentUser()!.email.toString(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0B111D),
+      backgroundColor: Colors.white,
+      // backgroundColor: Color(0xFF0B111D),
       appBar: AppBar(
-        elevation: 8,
-        backgroundColor: Color(0xFF0B111D),
+        backgroundColor: Color(0xFF101010),
+        // backgroundColor: Color(0xFF0B111D),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -39,12 +65,27 @@ class ChatPage extends StatelessWidget {
               chatController.receiverName.value,
               style: TextStyle(color: Colors.white),
             ),
-            SizedBox(width: 81,),
-            Icon(Icons.call_outlined,color: Colors.white,),
-            SizedBox(width: 20,),
-            Icon(Icons.video_call,color: Colors.white,),
-            SizedBox(width: 20,),
-            Icon(Icons.more_vert,color: Colors.white,),
+            SizedBox(
+              width: 81,
+            ),
+            Icon(
+              Icons.call_outlined,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Icon(
+              Icons.video_call,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
           ],
         ),
       ),
@@ -102,23 +143,34 @@ class ChatPage extends StatelessWidget {
                           children: [
                             GestureDetector(
                               child: Card(
-
                                 shape: RoundedRectangleBorder(
+                                  borderRadius: (chatList[index].sender! ==
+                                          AuthService.authService
+                                              .getCurrentUser()!
+                                              .email)
+                                      ? BorderRadius.only(
+                                          bottomLeft: Radius.circular(20),
+                                          topLeft: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                          //sender
+                                          //topRight: Radius.circular(20),
+                                        )
+                                      : BorderRadius.only(
+                                          bottomRight: Radius.circular(20),
+                                          // topLeft: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
 
-                                  borderRadius:(chatList[index].sender! ==
-                            AuthService.authService
-                            .getCurrentUser()!
-                            .email)? BorderRadius.only(
-                                    bottomLeft: Radius.circular(20),
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ):BorderRadius.only(
-                                    bottomRight: Radius.circular(20),
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                  ),
+                                          /// recever
+                                        ),
                                 ),
-                                color: Color(0xFF2E7587),
+                                color: (chatList[index].sender! ==
+                                        AuthService.authService
+                                            .getCurrentUser()!
+                                            .email)
+                                    ? Color(0xFF3E4757) // Color for the sender
+                                    : Color(0xFF6C7C8B),
+                                // color: Color(0xFF2E7587),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
@@ -133,9 +185,14 @@ class ChatPage extends StatelessWidget {
                                       (chatList[index].isImage)
                                           ? SizedBox(
                                               height: 200,
-                                              width: 150,
-                                              child: Image.network(
-                                                chatList[index].message ?? "",
+                                              width: 200,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.network(
+                                                  fit: BoxFit.cover,
+                                                  chatList[index].message ?? "",
+                                                ),
                                               ),
                                             )
                                           : Text(
@@ -194,15 +251,16 @@ class ChatPage extends StatelessWidget {
                                 showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    backgroundColor: Color(0xFF103550),
+                                    backgroundColor: Colors.white,
                                     title: Text(
                                       "Update",
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: Colors.grey.shade900,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     content: TextField(
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20),
                                       controller:
                                           chatController.txtUpdateMessage,
                                     ),
@@ -231,56 +289,93 @@ class ChatPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextField(
-                  
-                  controller: chatController.txtMessage,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                    prefixIcon: Icon(Icons.emoji_emotions,size: 28,color: Colors.amber,),
-                    suffixIcon: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () async {
-                            ChatModel chat = ChatModel(
-                              sender: AuthService.authService
-                                  .getCurrentUser()!
-                                  .email,
-                              receiver: chatController.receiverEmail.value,
-                              message: "",
-                              time: Timestamp.now(),
-                              isImage: true,
-                            );
-                            await chatController.sendImage(chat);
-                          },
-                          icon: Icon(
-                            Icons.attach_file_outlined,
-                            color: Colors.blueAccent,
-                          ),
+                Container(
+                  height: 90,
+                  width: double.infinity,
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: TextField(
+                      controller: chatController.txtMessage,
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                      decoration: InputDecoration(
+                        hintText: 'Type your message...',
+                        hintStyle: TextStyle(
+                          color: Colors.grey.shade900,
                         ),
-                        IconButton(
-                          onPressed: () async {
-                            ChatModel chat = ChatModel(
-                              sender: AuthService.authService
-                                  .getCurrentUser()!
-                                  .email,
-                              receiver: chatController.receiverEmail.value,
-                              message: chatController.txtMessage.text,
-                              time: Timestamp.now(),
-                              isImage: false,
-                            );
-                            await CloudFireStoreService.cloudFireStoreService
-                                .addChatInFireStore(chat);
-                          },
-                          icon: Icon(
-                            Icons.send,
-                            color: Colors.grey,
-                          ),
+                        fillColor: Colors.grey[300],
+                        // Background fill color
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.transparent, width: 2.0),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                      ],
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.transparent, width: 2.0),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        prefixIcon: Icon(
+                          Icons.emoji_emotions,
+                          size: 28,
+                          color: Colors.grey.shade900,
+                        ),
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                ChatModel chat = ChatModel(
+                                  sender: AuthService.authService
+                                      .getCurrentUser()!
+                                      .email,
+                                  receiver: chatController.receiverEmail.value,
+                                  message: "",
+                                  time: Timestamp.now(),
+                                  isImage: true,
+                                );
+                                await chatController.sendImage(chat);
+                              },
+                              icon: Icon(
+                                Icons.attach_file_outlined,
+                                color: Colors.grey.shade900,
+                              ),
+                            ),
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade900,
+                                  shape: BoxShape.circle),
+                              child: IconButton(
+                                onPressed: () async {
+                                  ChatModel chat = ChatModel(
+                                    sender: AuthService.authService
+                                        .getCurrentUser()!
+                                        .email,
+                                    receiver:
+                                        chatController.receiverEmail.value,
+                                    message: chatController.txtMessage.text,
+                                    time: Timestamp.now(),
+                                    isImage: false,
+                                  );
+                                  await CloudFireStoreService
+                                      .cloudFireStoreService
+                                      .addChatInFireStore(chat);
+                                },
+                                icon: Icon(
+                                  Icons.send,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),

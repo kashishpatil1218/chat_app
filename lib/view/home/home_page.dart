@@ -17,14 +17,15 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       drawer: userDrawer(),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.grey.shade900,
         title: Text(
           "Chats",
           style: TextStyle(color: Colors.white, fontSize: 28),
         ),
+
         actions: [
           IconButton(
             onPressed: () async {
@@ -75,14 +76,17 @@ class HomePage extends StatelessWidget {
                   Get.toNamed('/chat');
                 },
                 leading: CircleAvatar(
+                  radius: 25,
                   backgroundImage: NetworkImage(userList[index].Image!),
                 ),
                 title: Text(
                   userList[index].name!,
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black, fontSize: 18),
                 ),
-                subtitle: Text(userList[index].email!,
-                    style: TextStyle(color: Colors.grey)),
+                subtitle: Text(
+                  (userList[index].isOnline) ? "Online" : "Offline",
+                  style: TextStyle(color: Colors.grey.shade800),
+                ),
               );
             },
           );

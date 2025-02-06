@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       getPages: [
         // GetPage(name: '/', page: () => simplePage()),
+        // GetPage(
+        //   name: '/',
+        //   page: () => SplashPage(),),
         GetPage(
           name: '/',
           page: () => (AuthService.authService.getCurrentUser() == null)

@@ -194,8 +194,11 @@ class SignIn extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10,left: 200),
-                        child: Text('Forget Password',style: TextStyle(color: Colors.purple),),
+                        padding: const EdgeInsets.only(top: 10, left: 200),
+                        child: Text(
+                          'Forget Password',
+                          style: TextStyle(color: Colors.purple),
+                        ),
                       ),
                       SizedBox(height: 30),
                       ElevatedButton(
@@ -211,7 +214,8 @@ class SignIn extends StatelessWidget {
                               "Please enter the correct email and password!",
                             );
                           } else {
-                            User? user = AuthService.authService.getCurrentUser();
+                            User? user =
+                                AuthService.authService.getCurrentUser();
                             if (user != null) {
                               Get.offAll(
                                 const HomePage(),
@@ -226,8 +230,8 @@ class SignIn extends StatelessWidget {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -258,14 +262,15 @@ class SignIn extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       Divider(
-                        thickness: 1,
+                        thickness: 2,
                         color: Colors.grey.shade300,
                       ),
                       SizedBox(height: 20),
                       SignInButton(
                         Buttons.google,
                         onPressed: () async {
-                          await GoogleAuth.googleAuth.signInWithGoogle();
+                          await GoogleAuth.googleAuth.signOutFromGoogle();
+                          //await GoogleAuth.googleAuth.signInWithGoogle();
                           User? user = AuthService.authService.getCurrentUser();
 
                           if (user != null) {

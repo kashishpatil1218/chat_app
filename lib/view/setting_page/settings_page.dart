@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../model/user_model.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -97,11 +98,9 @@ class SettingsPage extends StatelessWidget {
     //   ),
     // );
     return Scaffold(
-      backgroundColor: Colors.black45,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.black45,
-        shadowColor: Colors.black38,
-        elevation: 8,
+        backgroundColor: Color(0xFF101010),
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamed('/home');
@@ -125,18 +124,31 @@ class SettingsPage extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXQcP51A3ncwchFeonpESD-_s8Gg043M_a2g&s'),
+                    backgroundImage: NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXQcP51A3ncwchFeonpESD-_s8Gg043M_a2g&s'),
                     radius: 40,
                   ),
                 ),
-                Text(
-                  'Kashish patil',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+                Column(
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                          text: 'Kashish patil\n',
+                          style: TextStyle(color: Colors.black, fontSize: 25,fontWeight: FontWeight.bold),
+                          children: [
+                            TextSpan(
+                                text: 'Hey there! I am using this app.',
+                                style:
+                                    TextStyle(color: Colors.grey.shade600, fontSize: 18,fontWeight: FontWeight.w500))
+                          ]),
+                    ),
+
+                  ],
                 ),
               ],
             ),
             Divider(
-              color: Colors.grey.shade900,
+              color: Colors.grey,
             ),
             settingOptions(
               icon: Icons.key,
@@ -144,32 +156,37 @@ class SettingsPage extends StatelessWidget {
               subtitle: ('Security,notification,change number'),
             ),
             settingOptions(
-              icon: Icons.lock_open_sharp,
+              icon: Icons.lock,
               title: ('Privacy'),
               subtitle: ('Block contacts,disappearing messages'),
             ),
             settingOptions(
-              icon: Icons.file_copy_outlined,
-              title: ('Lists'),
-              subtitle: ('Manage people and groups'),
+              icon: Icons.favorite,
+              title: ('Favorites'),
+              subtitle: ('Add, record, remove'),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: settingOptions(
+                icon: Icons.chat,
+                title: ('Chats'),
+                subtitle: ('Theme, wallpapers, chat history'),
+              ),
             ),
             settingOptions(
-              icon: Icons.chat_outlined,
-              title: ('Chats'),
-              subtitle: ('Theme, wallpapers, chat history'),
-            ),
-            settingOptions(
-              icon: Icons.notifications_none_outlined,
+              icon: Icons.notifications,
               title: ('Notifications'),
               subtitle: ('Message, group & call tones'),
             ),
             settingOptions(
               icon: Icons.language,
-              title: ('Language'),
+              title: ('App language'),
               subtitle: ('English(device language'),
             ),
             settingOptions(
-              icon: Icons.help_outline,
+              icon: Icons.help,
               title: ('Help'),
               subtitle: ('Help center, contact us, privacy policy'),
             ),
@@ -188,15 +205,15 @@ class SettingsPage extends StatelessWidget {
       child: ListTile(
         leading: Padding(
           padding: const EdgeInsets.only(bottom: 30, left: 5),
-          child: Icon(icon, color: Colors.grey, size: 25),
+          child: Icon(icon, color: Colors.grey.shade900, size: 25),
         ),
         title: Text(
           title,
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          style: TextStyle(color: Colors.black, fontSize: 20,fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(color: Colors.grey, fontSize: 15),
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 15),
         ),
       ),
     );

@@ -3,7 +3,6 @@ import 'package:chat_app/model/user_model.dart';
 import 'package:chat_app/services/auth_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class CloudFireStoreService {
   CloudFireStoreService._();
@@ -18,8 +17,14 @@ class CloudFireStoreService {
       'email': user.email,
       'name': user.name,
       'phone': user.phone,
-      'token': user.token,
+      'isOnline': user.isOnline,
       'Image': user.Image,
+    });
+  }
+
+  Future<void> editOnline(bool isOnline, String email) async {
+    await fireStore.collection("users").doc(email).update({
+      "isOnline": isOnline,
     });
   }
 
