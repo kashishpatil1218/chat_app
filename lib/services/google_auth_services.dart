@@ -29,18 +29,3 @@ class GoogleAuth {
     await googleSignIn.signOut();
   }
 }
-
-/// aane koi button na click par muki de je to taru google auth thai jashe
-
-//                        await GoogleAuth.googleAuth.signInWithGoogle();
-//
-//                             User? user = Auth.auth.currentUser();
-//                             if (user != null) {
-//                               await Get.offAll(
-//                                 const FloatingBottomBar(),
-//                                 duration: const Duration(milliseconds: 600),
-//                                 transition: Transition.fadeIn,
-//                               );
-//                             } else {
-//                               Get.snackbar("error", user!.toString());
-//                             }

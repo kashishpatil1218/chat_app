@@ -1,102 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../model/user_model.dart';
-
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text("Settings"),
-    //   ),
-    //   body: ListView(
-    //     padding: EdgeInsets.all(10),
-    //     children: [
-    //       // Profile Settings
-    //       ListTile(
-    //         leading: Icon(Icons.person, color: Colors.blue),
-    //         title: Text("Edit Profile"),
-    //         subtitle: Text("Change your name, picture, etc."),
-    //         onTap: () {
-    //           Get.toNamed('/edit-profile'); // Navigate to edit profile page
-    //         },
-    //       ),
-    //       Divider(),
-    //
-    //       // Notification Settings
-    //       ListTile(
-    //         leading: Icon(Icons.notifications, color: Colors.orange),
-    //         title: Text("Notifications"),
-    //         subtitle: Text("Manage notification preferences"),
-    //         onTap: () {
-    //           Get.toNamed('/notifications'); // Navigate to notifications page
-    //         },
-    //       ),
-    //       Divider(),
-    //
-    //       // Privacy Settings
-    //       ListTile(
-    //         leading: Icon(Icons.lock, color: Colors.red),
-    //         title: Text("Privacy"),
-    //         subtitle: Text("Manage privacy settings"),
-    //         onTap: () {
-    //           Get.toNamed('/privacy'); // Navigate to privacy settings page
-    //         },
-    //       ),
-    //       Divider(),
-    //
-    //       // Appearance Settings
-    //       ListTile(
-    //         leading: Icon(Icons.palette, color: Colors.green),
-    //         title: Text("Appearance"),
-    //         subtitle: Text("Change app theme and layout"),
-    //         onTap: () {
-    //           Get.toNamed('/appearance'); // Navigate to appearance settings page
-    //         },
-    //       ),
-    //       Divider(),
-    //
-    //       // Help and Support
-    //       ListTile(
-    //         leading: Icon(Icons.help_outline, color: Colors.purple),
-    //         title: Text("Help & Support"),
-    //         subtitle: Text("Get help or report issues"),
-    //         onTap: () {
-    //           Get.toNamed('/help'); // Navigate to help & support page
-    //         },
-    //       ),
-    //       Divider(),
-    //
-    //       // About
-    //       ListTile(
-    //         leading: Icon(Icons.info_outline, color: Colors.grey),
-    //         title: Text("About"),
-    //         subtitle: Text("Learn more about the app"),
-    //         onTap: () {
-    //           Get.toNamed('/about'); // Navigate to about page
-    //         },
-    //       ),
-    //       Divider(),
-    //
-    //       // Logout
-    //       ListTile(
-    //         leading: Icon(Icons.logout, color: Colors.black),
-    //         title: Text("Logout"),
-    //         onTap: () async {
-    //           await AuthService.authService.signOutUser();
-    //           await GoogleAuth.googleAuth.signOutFromGoogle();
-    //           Get.offAll(
-    //             SignIn(),
-    //             transition: Transition.upToDown,
-    //             duration: Duration(milliseconds: 600),
-    //           );
-    //         },
-    //       ),
-    //     ],
-    //   ),
-    // );
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -133,16 +41,22 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     RichText(
                       text: TextSpan(
-                          text: 'Kashish patil\n',
-                          style: TextStyle(color: Colors.black, fontSize: 25,fontWeight: FontWeight.bold),
-                          children: [
-                            TextSpan(
-                                text: 'Hey there! I am using this app.',
-                                style:
-                                    TextStyle(color: Colors.grey.shade600, fontSize: 18,fontWeight: FontWeight.w500))
-                          ]),
+                        text: 'Kashish patil\n',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                            text: 'Hey there! I am using this app.',
+                            style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
                     ),
-
                   ],
                 ),
               ],
@@ -209,7 +123,8 @@ class SettingsPage extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(color: Colors.black, fontSize: 20,fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
           subtitle,

@@ -31,21 +31,7 @@ class ChatController extends GetxController {
     image = userImage;
   }
 
-  // Future<void> sendImageFromGallery(ChatModel chat) async {
-  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  //   if (image != null) {
-  //
-  //     print('Selected image from gallery: ${image.path}');
-  //   }
-  // }
-  //
-  // Future<void> sendImageFromCamera(ChatModel chat) async {
-  //   final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-  //   if (image != null) {
-  //
-  //     print('Captured image from camera: ${image.path}');
-  //   }
-  // }
+
 
   TextEditingController txtMessage = TextEditingController();
   TextEditingController txtUpdateMessage = TextEditingController();

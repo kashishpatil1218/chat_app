@@ -22,8 +22,8 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade900,
         title: Text(
-          "Chats",
-          style: TextStyle(color: Colors.white, fontSize: 28),
+          "Poptalk",
+          style: TextStyle(color: Colors.white, fontSize: 28,fontWeight: FontWeight.bold),
         ),
 
         actions: [
@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
                 ),
                 title: Text(
                   userList[index].name!,
-                  style: TextStyle(color: Colors.black, fontSize: 18),
+                  style: TextStyle(color: Colors.black, fontSize: 18,fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
                   (userList[index].isOnline) ? "Online" : "Offline",

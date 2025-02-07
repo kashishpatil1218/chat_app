@@ -123,7 +123,6 @@ class _ChatPageState extends State<ChatPage> {
                 (e) => e.id,
               )
               .toList();
-
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -133,79 +132,57 @@ class _ChatPageState extends State<ChatPage> {
                     child: Column(
                       children: List.generate(
                         chatList.length,
-                        (index) => Row(
-                          mainAxisAlignment: (AuthService.authService
-                                      .getCurrentUser()!
-                                      .email ==
-                                  chatList[index].sender)
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
+                            (index) => Row(
+                          mainAxisAlignment: (AuthService.authService.getCurrentUser()!.email == chatList[index].sender)
+                              ? MainAxisAlignment.end  // Align to the right for sender
+                              : MainAxisAlignment.start, // Align to the left for receiver
                           children: [
                             GestureDetector(
                               child: Card(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: (chatList[index].sender! ==
-                                          AuthService.authService
-                                              .getCurrentUser()!
-                                              .email)
+                                  borderRadius: (chatList[index].sender! == AuthService.authService.getCurrentUser()!.email)
                                       ? BorderRadius.only(
-                                          bottomLeft: Radius.circular(20),
-                                          topLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                          //sender
-                                          //topRight: Radius.circular(20),
-                                        )
+                                    bottomLeft: Radius.circular(20),
+                                    topLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                  )
                                       : BorderRadius.only(
-                                          bottomRight: Radius.circular(20),
-                                          // topLeft: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-
-                                          /// recever
-                                        ),
+                                    bottomRight: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
                                 ),
-                                color: (chatList[index].sender! ==
-                                        AuthService.authService
-                                            .getCurrentUser()!
-                                            .email)
-                                    ? Color(0xFF3E4757) // Color for the sender
-                                    : Color(0xFF6C7C8B),
-                                // color: Color(0xFF2E7587),
+                                color: (chatList[index].sender! == AuthService.authService.getCurrentUser()!.email)
+                                    ? Color(0xFF3E4757) // Sender color (right)
+                                    : Color(0xFF6C7C8B), // Receiver color (left)
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        (chatList[index].sender! ==
-                                                AuthService.authService
-                                                    .getCurrentUser()!
-                                                    .email)
-                                            ? CrossAxisAlignment.end
-                                            : CrossAxisAlignment.start,
+                                    crossAxisAlignment: (chatList[index].sender! == AuthService.authService.getCurrentUser()!.email)
+                                        ? CrossAxisAlignment.end
+                                        : CrossAxisAlignment.start,
                                     children: [
                                       (chatList[index].isImage)
                                           ? SizedBox(
-                                              height: 200,
-                                              width: 200,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  fit: BoxFit.cover,
-                                                  chatList[index].message ?? "",
-                                                ),
-                                              ),
-                                            )
+                                        height: 200,
+                                        width: 200,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Image.network(
+                                            fit: BoxFit.cover,
+                                            chatList[index].message ?? "",
+                                          ),
+                                        ),
+                                      )
                                           : Text(
-                                              chatList[index]
-                                                  .message
-                                                  .toString(),
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white70,
-                                                fontWeight: FontWeight.w500,
-                                                letterSpacing: .2,
-                                              ),
-                                            ),
+                                        chatList[index].message.toString(),
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white70,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: .2,
+                                        ),
+                                      ),
                                       Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -221,13 +198,7 @@ class _ChatPageState extends State<ChatPage> {
                                             width: 2,
                                           ),
                                           Text(
-                                            (chatList[index]
-                                                        .time
-                                                        .toDate()
-                                                        .hour <=
-                                                    12)
-                                                ? ('AM')
-                                                : ('PM'),
+                                            (chatList[index].time.toDate().hour <= 12) ? ('AM') : ('PM'),
                                             style: const TextStyle(
                                               decoration: TextDecoration.none,
                                               color: Colors.white60,
@@ -241,8 +212,7 @@ class _ChatPageState extends State<ChatPage> {
                                 ),
                               ),
                               onDoubleTap: () {
-                                CloudFireStoreService.cloudFireStoreService
-                                    .deleteMessage(
+                                CloudFireStoreService.cloudFireStoreService.deleteMessage(
                                   chatList[index].receiver!,
                                   docIdList[index],
                                 );
@@ -254,30 +224,24 @@ class _ChatPageState extends State<ChatPage> {
                                     backgroundColor: Colors.white,
                                     title: Text(
                                       "Update",
-                                      style: TextStyle(
-                                          color: Colors.grey.shade900,
-                                          fontWeight: FontWeight.bold),
+                                      style: TextStyle(color: Colors.grey.shade900, fontWeight: FontWeight.bold),
                                     ),
                                     content: TextField(
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 20),
-                                      controller:
-                                          chatController.txtUpdateMessage,
+                                      style: TextStyle(color: Colors.black, fontSize: 20),
+                                      controller: chatController.txtUpdateMessage,
                                     ),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
-                                          CloudFireStoreService
-                                              .cloudFireStoreService
-                                              .updateChat(
-                                                  chatList[index].receiver!,
-                                                  docIdList[index],
-                                                  chatController
-                                                      .txtUpdateMessage.text);
+                                          CloudFireStoreService.cloudFireStoreService.updateChat(
+                                            chatList[index].receiver!,
+                                            docIdList[index],
+                                            chatController.txtUpdateMessage.text,
+                                          );
                                           Get.back();
                                         },
-                                        child: Text("update"),
-                                      )
+                                        child: Text("Update"),
+                                      ),
                                     ],
                                   ),
                                 );
@@ -289,6 +253,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                 ),
+                // Message input section at the bottom
                 Container(
                   height: 90,
                   width: double.infinity,
@@ -300,20 +265,15 @@ class _ChatPageState extends State<ChatPage> {
                       style: TextStyle(color: Colors.black, fontSize: 20),
                       decoration: InputDecoration(
                         hintText: 'Type your message...',
-                        hintStyle: TextStyle(
-                          color: Colors.grey.shade900,
-                        ),
+                        hintStyle: TextStyle(color: Colors.grey.shade900),
                         fillColor: Colors.grey[300],
-                        // Background fill color
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.transparent, width: 2.0),
+                          borderSide: BorderSide(color: Colors.transparent, width: 2.0),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.transparent, width: 2.0),
+                          borderSide: BorderSide(color: Colors.transparent, width: 2.0),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         border: OutlineInputBorder(
@@ -330,9 +290,7 @@ class _ChatPageState extends State<ChatPage> {
                             IconButton(
                               onPressed: () async {
                                 ChatModel chat = ChatModel(
-                                  sender: AuthService.authService
-                                      .getCurrentUser()!
-                                      .email,
+                                  sender: AuthService.authService.getCurrentUser()!.email,
                                   receiver: chatController.receiverEmail.value,
                                   message: "",
                                   time: Timestamp.now(),
@@ -348,24 +306,17 @@ class _ChatPageState extends State<ChatPage> {
                             Container(
                               height: 50,
                               width: 50,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade900,
-                                  shape: BoxShape.circle),
+                              decoration: BoxDecoration(color: Colors.grey.shade900, shape: BoxShape.circle),
                               child: IconButton(
                                 onPressed: () async {
                                   ChatModel chat = ChatModel(
-                                    sender: AuthService.authService
-                                        .getCurrentUser()!
-                                        .email,
-                                    receiver:
-                                        chatController.receiverEmail.value,
+                                    sender: AuthService.authService.getCurrentUser()!.email,
+                                    receiver: chatController.receiverEmail.value,
                                     message: chatController.txtMessage.text,
                                     time: Timestamp.now(),
                                     isImage: false,
                                   );
-                                  await CloudFireStoreService
-                                      .cloudFireStoreService
-                                      .addChatInFireStore(chat);
+                                  await CloudFireStoreService.cloudFireStoreService.addChatInFireStore(chat);
                                 },
                                 icon: Icon(
                                   Icons.send,
@@ -382,6 +333,8 @@ class _ChatPageState extends State<ChatPage> {
               ],
             ),
           );
+
+
         },
       ),
     );
